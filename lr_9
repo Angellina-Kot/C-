@@ -1,0 +1,199 @@
+using System;
+using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Program
+{
+    class Arr2
+    {
+        int[,] intArray;//поле класса
+
+        public Arr2(int n, int m)
+        {
+            intArray = new int[n, m];//Конструктор, позволяющий создать массив размерности n×m.
+        }
+        public void Input(int n, int m)//Метод, позволяющий ввести элементы массива с клавиатуры
+        {
+            Console.WriteLine("Введите элементы массива:");
+            for (int i = 0; i < n; i++) 
+            {
+                for(int j = 0; j < m; j++)
+                {
+                    Console.Write("Элемент [{0}, {1}]: ",i, j);
+                    intArray[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+        }
+        public void Output()//Метод, позволяющий вывести элементы массива на экран
+        {
+            for (int i = 0; i < intArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < intArray.GetLength(1); j++)
+                {
+                    Console.Write("{0} ", intArray[i,j]);
+                }
+            Console.WriteLine();
+            }
+        }
+        public int Summ(int i)//Метод, позволяющий вычислить сумму элементов i-того столбца
+        {
+            int s = 0;
+            for (int j = 0; j < intArray.GetLength(0); j++)
+            {
+                s += intArray[j, i];
+            }
+            return s;
+        }
+        public int Count_0 //Свойство, позволяющее вычислить количество нулевых элементов в массиве (доступное только для чтения)
+        {
+            get
+            {
+                int count = 0;
+                foreach (int i in intArray)
+                {
+                    if (i == 0)
+                        count++;
+                }
+                return count;
+            }
+        }
+        public int Diagonal_3 //Свойство, позволяющее установить значение всех элементов главной диагонали массива равное скаляру (доступное только для записи)
+        {
+            set
+            {
+                int n = 3;
+                for (int i = 0; i < intArray.GetLength(0); i++)
+                {
+                    for (int j = 0; j < intArray.GetLength(1); j++)
+                    {
+                        if (i == j)
+                            intArray[i,j] = n;
+                    }
+                }
+            }
+        }
+        public int this[int n, int m] //Двумерный индексатор, позволяющий обращаться к соответствующему элементу массива
+        {
+            get { return intArray[n, m]; }
+            //set { intArray[n, m] = value; }
+        }
+
+        public static Arr2 operator ++(Arr2 array) //Перегрузка операции ++
+        {
+            for (int i = 0; i < array.intArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.intArray.GetLength(1); j++)
+                {
+                    ++array.intArray[i, j];
+                }
+            }
+            return array;
+        }
+
+        public static Arr2 operator --(Arr2 array) //Перегрузка операции --
+        {
+            for (int i = 0; i < array.intArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.intArray.GetLength(1); j++)
+                {
+                    --array.intArray[i, j];
+                }
+            }
+            return array;
+        }
+
+        public static bool operator true(Arr2 array) //Перегрузка константы true 
+        {
+            if (array.intArray.GetLength(0) == array.intArray.GetLength(1))
+                return true;
+            else return false;
+        }
+
+
+        public static bool operator false(Arr2 array) //Перегрузка константы false
+        {
+            if (array.intArray.GetLength(0) != array.intArray.GetLength(1))
+                return false;
+            else return true;
+        }
+
+        //public static Arr2 operator +(int[,] a, out int[,] b)
+        //{
+        //    b = a;
+        //    int[,] c = ;
+            
+        //    for (int i = 0; i < a.GetLength(0); i++)
+        //        for (int j = 0; j < a.GetLength(1); j++)
+        //        {
+        //            c[i, j] = a[i, j] + b[i, j];
+
+        //            //c.Arr2();
+        //            //res.Arr2 = c;
+        //            //return c;
+        //        }
+        //    return c;
+        //}
+
+        public static explicit operator int[,](Arr2 a) // Преобразования класса массив в двумерный массив
+        {
+            return a.intArray;
+        }
+
+        public static explicit operator Arr2(int[,] a) // Преобразование двумерного массива в класс
+        {
+            var result = new Arr2(a.GetLength(0), a.GetLength(1));
+            Array.Copy(a, result.intArray, a.Length);
+            return result;
+        }
+
+
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            Console.Write("введите количество строк: \nn = ");
+            int n = int.Parse(Console.ReadLine());
+            Console.Write("введите количество строк: \nm =  ");
+            int m = int.Parse(Console.ReadLine());
+
+            Arr2 mass = new Arr2(n, m);
+            mass.Input(n,m);
+
+            Console.WriteLine("Двумерный массив: ");
+            mass.Output();
+
+            Console.Write("введите номер столбца: \ni = ");
+            int i = int.Parse(Console.ReadLine());
+            Console.WriteLine("Сумма элементов {0}-го столбца - {1}", i, mass.Summ(i-1));
+
+            Console.WriteLine("Кол-во нулевых элементов - {0}", mass.Count_0);
+
+            Console.WriteLine("введите скаляр");
+            int k = int.Parse(Console.ReadLine());
+            mass.Diagonal_3 = k;
+            mass.Output();
+
+            //{// Demonstrating operator overloading
+            ++mass;
+            Console.WriteLine("Массив после добавления единицы к каждому элементу массива:");
+            mass.Output();
+
+            --mass;
+            Console.WriteLine("Массив после удаления единицы каждого элемента массива:");
+            mass.Output();
+
+            //Console.WriteLine("Массив квадратный? ", (true)mass);
+            //(true)mass;
+
+           
+            Arr2 anotherArray = new Arr2(n, m);
+            anotherArray.Input(n,m);
+            var sumArray = mass + anotherArray;
+            Console.WriteLine("Sum of both arrays:");
+            sumArray.Output();
+
+        }
+    }
+}        
