@@ -157,42 +157,32 @@ namespace Program
             int n = int.Parse(Console.ReadLine());
             Console.Write("введите количество строк: \nm =  ");
             int m = int.Parse(Console.ReadLine());
-
+            
             Arr2 mass = new Arr2(n, m);
             mass.Input(n,m);
-
+            
             Console.WriteLine("Двумерный массив: ");
             mass.Output();
-
+            
             Console.Write("введите номер столбца: \ni = ");
             int i = int.Parse(Console.ReadLine());
             Console.WriteLine("Сумма элементов {0}-го столбца - {1}", i, mass.Summ(i-1));
-
+            
             Console.WriteLine("Кол-во нулевых элементов - {0}", mass.Count_0);
-
+            
             Console.WriteLine("введите скаляр");
             int k = int.Parse(Console.ReadLine());
             mass.Diagonal_3 = k;
             mass.Output();
-
+            
             //{// Demonstrating operator overloading
             ++mass;
             Console.WriteLine("Массив после добавления единицы к каждому элементу массива:");
             mass.Output();
-
+            
             --mass;
             Console.WriteLine("Массив после удаления единицы каждого элемента массива:");
             mass.Output();
-
-            //Console.WriteLine("Массив квадратный? ", (true)mass);
-            //(true)mass;
-
-           
-            Arr2 anotherArray = new Arr2(n, m);
-            anotherArray.Input(n,m);
-            var sumArray = mass + anotherArray;
-            Console.WriteLine("Sum of both arrays:");
-            sumArray.Output();
 
         }
     }
