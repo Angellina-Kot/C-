@@ -183,6 +183,7 @@ namespace Program
             --mass;
             Console.WriteLine("Массив после удаления единицы каждого элемента массива:");
             mass.Output();
+//конец
 
         }
     }
